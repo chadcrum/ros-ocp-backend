@@ -69,7 +69,7 @@ func ProcessReport(msg *kafka.Message, _ *kafka.Consumer) {
 		if err != nil {
 			invalidCSV.Inc()
 			log.Errorf("Unable to read CSV from URL. Error: %s", err)
-			return
+			continue
 		}
 		df := dataframe.LoadRecords(
 			data,
@@ -78,7 +78,7 @@ func ProcessReport(msg *kafka.Message, _ *kafka.Consumer) {
 		df, err = utils.Aggregate_data(df)
 		if err != nil {
 			log.Errorf("Error: %s", err)
-			return
+			continue
 		}
 
 		// grouping container(row in csv) by there deployement.
